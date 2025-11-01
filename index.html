@@ -1,19 +1,22 @@
 <!DOCTYPE html>
-<html lang="ru" class="scroll-smooth">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ШинаДом - Профессиональный Шиномонтаж</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E🛞%3C/text%3E%3C/svg%3E">
+    <link rel="icon" href="https://i.postimg.cc/C1hpVcxb/image.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #030712; 
             color: #f9fafb;
+            background-image: linear-gradient(to bottom right, #030712, #111827, #030712);
+            overflow-x: hidden;
         }
         .hero-parallax {
             background-image: url('https://i.postimg.cc/W4QNn4y3/image-1.webp');
@@ -40,11 +43,11 @@
         }
         
         .quiz-step {
-            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
         .quiz-step.hidden {
             opacity: 0;
-            transform: translateX(20px);
+            transform: translateX(30px);
             pointer-events: none;
             position: absolute;
         }
@@ -55,23 +58,14 @@
         }
         .quiz-step.hidden-left {
             opacity: 0;
-            transform: translateX(-20px);
+            transform: translateX(-30px);
             pointer-events: none;
             position: absolute;
         }
-        .quiz-option-btn {
-            transition: all 0.2s ease;
-        }
-        .quiz-option-btn:hover {
-            background-color: #1f2937; 
-            border-color: #22d3ee; 
-            transform: translateY(-2px);
-        }
-        .quiz-option-btn.selected {
-            background-color: #22d3ee; 
-            color: #111827;
-            font-weight: bold;
-            border-color: #22d3ee; 
+        
+        .quiz-option-btn:active, .quiz-back-btn:active, #quiz-to-confirm:active, #quiz-confirm:active, #complex-btn:active, #complex-reset-btn:active {
+            transform: scale(0.97);
+            transition-duration: 0.1s;
         }
         
         #quiz-container {
@@ -86,6 +80,76 @@
             background-repeat: no-repeat;
             background-position: right 0.75rem center;
             background-size: 1.5em 1.5em;
+        }
+        
+        .service-icon {
+            transition: transform 0.3s ease;
+        }
+        .service-card:hover .service-icon {
+            transform: translateY(-4px) scale(1.05);
+        }
+        
+        .price-list-item {
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        .price-list-item:hover {
+            background-color: #1f2937;
+            transform: translateX(5px);
+        }
+
+        .svg-anim-part {
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .glass-header {
+            background-color: rgba(3, 7, 18, 0.6); 
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(55, 65, 81, 0.5); 
+        }
+
+        .glass-card {
+            background-color: rgba(17, 24, 39, 0.6); 
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(55, 65, 81, 0.5); 
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            background-color: rgba(31, 41, 55, 0.7); 
+            border-color: rgba(34, 211, 238, 0.5); 
+        }
+        
+        .glass-modal {
+             background-color: rgba(31, 41, 55, 0.8); 
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(75, 85, 99, 0.5); 
+        }
+        
+        .glass-button {
+            background-color: rgba(17, 24, 39, 0.6); 
+            backdrop-filter: blur(8px);
+            border-color: rgba(55, 65, 81, 0.5); 
+            transition: all 0.2s ease;
+        }
+        .glass-button:hover {
+            background-color: rgba(31, 41, 55, 0.7); 
+            border-color: #22d3ee;
+        }
+        .glass-button.selected {
+            background-color: #22d3ee;
+            color: #111827;
+            font-weight: bold;
+            border-color: #22d3ee;
+            backdrop-filter: none;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .spinning-group {
+            animation: spin 5s linear infinite;
         }
         
         .bg-gray-900 { background-color: #111827; }
@@ -105,7 +169,7 @@
 </head>
 <body class="bg-gray-900 text-white">
 
-    <header class="fixed top-0 left-0 right-0 z-50 bg-gray-900 bg-opacity-80 backdrop-blur-md shadow-lg" data-aos="fade-down">
+    <header class="fixed top-0 left-0 right-0 z-50 glass-header" data-aos="fade-down">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#" class="text-3xl font-black text-cyan-400 transition-transform transform hover:scale-110 hover:drop-shadow-[0_0_10px_#22d3ee]">ШИНАДОМ</a>
             <div class="hidden md:flex space-x-6 items-center">
@@ -122,6 +186,7 @@
                 </a>
             </div>
         </nav>
+        <div id="scroll-progress-bar" class="fixed top-[65px] left-0 z-50 h-1 bg-cyan-400 shadow-[0_0_10px_#22d3ee]" style="width: 0%;"></div>
     </header>
 
     <main>
@@ -154,22 +219,22 @@
             <div class="container mx-auto px-6">
                 <h2 class="text-4xl font-bold text-center mb-12" data-aos="fade-up">Наши Услуги</h2>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="bg-gray-900 p-8 rounded-xl shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:shadow-lg hover:shadow-cyan-400/30" data-aos="fade-up" data-aos-delay="100">
-                        <div class="text-cyan-400 mb-4">
+                    <div class="glass-card p-8 rounded-xl shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:shadow-lg hover:shadow-cyan-400/30 service-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="text-cyan-400 mb-4 service-icon">
                             <i data-lucide="replace" class="h-12 w-12"></i>
                         </div>
                         <h3 class="text-2xl font-bold mb-3">Сезонная "переобувка"</h3>
                         <p class="text-gray-400">Полный комплекс: снятие, мойка, демонтаж, монтаж, балансировка и установка.</p>
                     </div>
-                    <div class="bg-gray-900 p-8 rounded-xl shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:shadow-lg hover:shadow-cyan-400/30" data-aos="fade-up" data-aos-delay="200">
-                        <div class="text-cyan-400 mb-4">
+                    <div class="glass-card p-8 rounded-xl shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:shadow-lg hover:shadow-cyan-400/30 service-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="text-cyan-400 mb-4 service-icon">
                             <i data-lucide="wrench" class="h-12 w-12"></i> 
                         </div>
                         <h3 class="text-2xl font-bold mb-3">Ремонт проколов и порезов</h3>
                         <p class="text-gray-400">Ремонтируем боковые порезы и проколы любой сложности. Быстро и надежно.</p>
                     </div>
-                    <div class="bg-gray-900 p-8 rounded-xl shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:shadow-lg hover:shadow-cyan-400/30" data-aos="fade-up" data-aos-delay="300">
-                        <div class="text-cyan-400 mb-4">
+                    <div class="glass-card p-8 rounded-xl shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:shadow-lg hover:shadow-cyan-400/30 service-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="text-cyan-400 mb-4 service-icon">
                             <i data-lucide="circle-dashed" class="h-12 w-12"></i>
                         </div>
                         <h3 class="text-2xl font-bold mb-3">Балансировка</h3>
@@ -179,26 +244,106 @@
             </div>
         </section>
 
-        <section id="why-us" class="py-20 bg-gray-900">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-4xl font-bold mb-12" data-aos="fade-up">Наш подход</h2>
-                <div class="max-w-2xl mx-auto text-left">
-                    <div data-aos="fade-up" data-aos-delay="100">
-                        <div class="flex items-center gap-4 mb-3">
-                            <i data-lucide="clock" class="h-8 w-8 text-cyan-400"></i>
-                            <h3 class="text-2xl font-bold">Работаем быстро</h3>
+        <div id="why-us-container" class="h-[300vh] relative">
+            <section id="why-us" class="py-20 bg-gray-900 sticky top-0 h-screen flex items-center">
+                <div class="container mx-auto px-6 text-center">
+                    <h2 class="text-4xl font-bold mb-12 pt-16" data-aos="fade-in">Наш подход</h2>
+                    <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 items-center text-left">
+                        <div class="mt-8 md:mt-0">
+                            <div class="flex items-center gap-4 mb-3" data-aos="fade-right" data-aos-delay="100">
+                                <i data-lucide="clock" class="h-8 w-8 text-cyan-400"></i>
+                                <h3 class="text-2xl font-bold">Работаем быстро</h3>
+                            </div>
+                            <p class="text-gray-300" data-aos="fade-right" data-aos-delay="200">Ваше время — наш приоритет. Забудьте об очередях. Мы ценим каждую вашу минуту и работаем на результат.</p>
                         </div>
-                        <p class="text-gray-300">Ваше время — наш приоритет. Забудьте об очередях. Мы ценим каждую вашу минуту и работаем на результат.</p>
+                        <div id="wheel-container" class="w-full h-full min-h-[300px] max-w-[70%] mx-auto">
+                            <svg id="wheel" viewBox="-100 -100 200 200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="w-full h-full">
+                                <defs>
+                                    <radialGradient id="tireGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                                        <stop offset="0%" style="stop-color:#383838; stop-opacity:1" />
+                                        <stop offset="50%" style="stop-color:#1c1c1c; stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#000000; stop-opacity:1" />
+                                    </radialGradient>
+                                    <pattern id="treadPattern" patternUnits="userSpaceOnUse" width="10" height="10" x="0" y="0">
+                                        <rect width="6" height="10" fill="#030303" opacity="0.6"/>
+                                    </pattern>
+                                    <linearGradient id="rimMainGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#67e8f9; stop-opacity:1" />
+                                        <stop offset="50%" style="stop-color:#22d3ee; stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#0e7490; stop-opacity:1" />
+                                    </linearGradient>
+                                    <linearGradient id="rimDarkGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#374151; stop-opacity:1" />
+                                        <stop offset="50%" style="stop-color:#1f2937; stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#111827; stop-opacity:1" />
+                                    </linearGradient>
+                                    <linearGradient id="spokeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#1f2937; stop-opacity:1" />
+                                        <stop offset="40%" style="stop-color:#22d3ee; stop-opacity:1" />
+                                        <stop offset="60%" style="stop-color:#22d3ee; stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#1f2937; stop-opacity:1" />
+                                    </linearGradient>
+                                    <radialGradient id="hubGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                                        <stop offset="0%" style="stop-color:#67e8f9; stop-opacity:1" />
+                                        <stop offset="50%" style="stop-color:#22d3ee; stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#111827; stop-opacity:1" />
+                                    </radialGradient>
+                                    <filter id="deepShadow">
+                                        <feDropShadow dx="3" dy="3" stdDeviation="4" flood-color="#000" flood-opacity="0.5"/>
+                                    </filter>
+                                    <filter id="softInnerShadow">
+                                        <feOffset dx="0" dy="0"/>
+                                        <feGaussianBlur stdDeviation="4" result="offset-blur"/>
+                                        <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse-mask"/>
+                                        <feFlood flood-color="#000" flood-opacity="0.4" result="color"/>
+                                        <feComposite operator="in" in="color" in2="inverse-mask" result="shadow"/>
+                                        <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+                                    </filter>
+                                    <path id="spoke" d="M 0 -28 C 10 -48, 10 -68, 0 -83 C -10 -68, -10 -48, 0 -28 Z" 
+                                          fill="url(#spokeGradient)" 
+                                          stroke="#111827" 
+                                          stroke-width="0.8"
+                                          filter="url(#deepShadow)"/>
+                                    <circle id="bolt" cx="18" cy="0" r="4" fill="#374151" stroke="#111827" stroke-width="0.6" filter="url(#deepShadow)"/>
+                                </defs>
+                                <g id="wheel-group">
+                                    <circle cx="0" cy="0" r="98" fill="url(#tireGradient)" stroke="#000" stroke-width="2.5" filter="url(#deepShadow)"/>
+                                    <circle cx="0" cy="0" r="98" fill="url(#treadPattern)" fill-opacity="0.4"/>
+                                    <circle cx="0" cy="0" r="90" fill="url(#rimMainGradient)" stroke="#0e7490" stroke-width="1.2" filter="url(#deepShadow)"/>
+                                    <circle cx="0" cy="0" r="87" fill="url(#rimDarkGradient)" stroke="none" filter="url(#softInnerShadow)"/>
+                                    <circle cx="0" cy="0" r="84" fill="url(#rimMainGradient)" stroke="#0e7490" stroke-width="0.6" filter="url(#softInnerShadow)"/>
+                                    <g id="spokes">
+                                        <use xlink:href="#spoke" />
+                                        <use xlink:href="#spoke" transform="rotate(72)" />
+                                        <use xlink:href="#spoke" transform="rotate(144)" />
+                                        <use xlink:href="#spoke" transform="rotate(216)" />
+                                        <use xlink:href="#spoke" transform="rotate(288)" />
+                                    </g>
+                                    <circle cx="0" cy="0" r="32" fill="url(#hubGradient)" stroke="#111827" stroke-width="1.8" filter="url(#deepShadow)"/>
+                                    <circle cx="0" cy="0" r="28" fill="url(#rimDarkGradient)" stroke="none" filter="url(#softInnerShadow)"/>
+                                    <circle cx="0" cy="0" r="18" fill="url(#rimMainGradient)" stroke="#0e7490" stroke-width="0.7"/>
+                                    <g id="bolts">
+                                        <use xlink:href="#bolt" />
+                                        <use xlink:href="#bolt" transform="rotate(72)"/>
+                                        <use xlink:href="#bolt" transform="rotate(144)"/>
+                                        <use xlink:href="#bolt" transform="rotate(216)"/>
+                                        <use xlink:href="#bolt" transform="rotate(288)"/>
+                                    </g>
+                                    <circle cx="0" cy="0" r="8" fill="#1f2937" stroke="#111827" stroke-width="1"/>
+                                    <circle cx="0" cy="0" r="4" fill="#22d3ee" />
+                                </g>
+                            </svg>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
 
         <section id="pricing" class="py-20 bg-gray-800">
             <div class="container mx-auto px-6 text-center">
                 <h2 class="text-4xl font-bold mb-12" data-aos="fade-up">Расчет стоимости</h2>
                 <div class="max-w-4xl mx-auto" data-aos="zoom-in">
-                    <p class="text-xl text-gray-300 mb-8">
+                    <p class="text-xl text-gray-300 mb-8" data-aos="fade-up" data-aos-delay="100">
                         Узнайте точную стоимость услуг для вашего автомобиля. 
                         Воспользуйтесь нашим калькулятором или посмотрите цены на дополнительные услуги ниже.
                     </p>
@@ -209,27 +354,27 @@
                 </div>
 
                 <div class="max-w-5xl mx-auto mt-20 grid md:grid-cols-2 gap-12 text-left">
-                    <div class="bg-gray-900 p-8 rounded-xl shadow-2xl transition-all duration-300 hover:shadow-lg hover:shadow-cyan-400/30" data-aos="fade-up">
+                    <div class="glass-card p-8 rounded-xl shadow-2xl transition-all duration-300 hover:shadow-lg hover:shadow-cyan-400/30" data-aos="fade-up">
                         <h3 class="text-2xl font-bold text-cyan-400 mb-6">Расходные материалы и Доп. Услуги</h3>
                         <ul class="space-y-4 text-lg">
-                            <li class="flex justify-between border-b border-gray-700 py-3"><span>Дошиповка зимних шин</span><span class="font-bold">20 ₽ / шип</span></li>
-                            <li class="flex justify-between border-b border-gray-700 py-3"><span>Установка вентиля для б/кам. шин</span><span class="font-bold">60 ₽</span></li>
-                            <li class="flex justify-between border-b border-gray-700 py-3"><span>Установка жгута</span><span class="font-bold">260 ₽</span></li>
-                            <li class="flex justify-between border-b border-gray-700 py-3"><span>Зачистка диска</span><span class="font-bold">100 ₽</span></li>
-                            <li class="flex justify-between border-b border-gray-700 py-3"><span>Обработка диска герметиком</span><span class="font-bold">200 ₽</span></li>
-                            <li class="flex justify-between border-b border-gray-700 py-3"><span>Грибок</span><span class="font-bold">200 ₽</span></li>
-                            <li class="flex justify-between border-b border-gray-700 py-3"><span>Заплатка (42мм/60мм)</span><span class="font-bold">200 ₽</span></li>
-                            <li class="flex justify-between border-b border-gray-700 py-3"><span>Заплатка кордовая (15)</span><span class="font-bold">320 ₽</span></li>
-                            <li class="flex justify-between border-b border-gray-700 py-3"><span>Заплатка кордовая (19)</span><span class="font-bold">420 ₽</span></li>
-                            <li class="flex justify-between pt-3"><span>Заплатка кордовая (25)</span><span class="font-bold">520 ₽</span></li>
+                            <li class="flex justify-between border-b border-gray-700 py-3 price-list-item"><span>Дошиповка зимних шин</span><span class="font-bold">20 ₽ / шип</span></li>
+                            <li class="flex justify-between border-b border-gray-700 py-3 price-list-item"><span>Установка вентиля для б/кам. шин</span><span class="font-bold">60 ₽</span></li>
+                            <li class="flex justify-between border-b border-gray-700 py-3 price-list-item"><span>Установка жгута</span><span class="font-bold">260 ₽</span></li>
+                            <li class="flex justify-between border-b border-gray-700 py-3 price-list-item"><span>Зачистка диска</span><span class="font-bold">100 ₽</span></li>
+                            <li class="flex justify-between border-b border-gray-700 py-3 price-list-item"><span>Обработка диска герметиком</span><span class="font-bold">200 ₽</span></li>
+                            <li class="flex justify-between border-b border-gray-700 py-3 price-list-item"><span>Грибок</span><span class="font-bold">200 ₽</span></li>
+                            <li class="flex justify-between border-b border-gray-700 py-3 price-list-item"><span>Заплатка (42мм/60мм)</span><span class="font-bold">200 ₽</span></li>
+                            <li class="flex justify-between border-b border-gray-700 py-3 price-list-item"><span>Заплатка кордовая (15)</span><span class="font-bold">320 ₽</span></li>
+                            <li class="flex justify-between border-b border-gray-700 py-3 price-list-item"><span>Заплатка кордовая (19)</span><span class="font-bold">420 ₽</span></li>
+                            <li class="flex justify-between pt-3 price-list-item"><span>Заплатка кордовая (25)</span><span class="font-bold">520 ₽</span></li>
                         </ul>
                     </div>
-                    <div class="bg-gray-900 p-8 rounded-xl shadow-2xl transition-all duration-300 hover:shadow-lg hover:shadow-cyan-400/30" data-aos="fade-up" data-aos-delay="200">
+                    <div class="glass-card p-8 rounded-xl shadow-2xl transition-all duration-300 hover:shadow-lg hover:shadow-cyan-400/30" data-aos="fade-up" data-aos-delay="200">
                         <h3 class="text-2xl font-bold text-cyan-400 mb-6">Правка и сварка дисков</h3>
                          <ul class="space-y-4 text-lg">
-                            <li class="flex justify-between border-b border-gray-700 py-3"><span>Правка диска штамп. (R13-R16)</span><span class="font-bold">420 ₽</span></li>
-                            <li class="flex justify-between border-b border-gray-700 py-3"><span>Правка диска литой (R13-R18)</span><span class="font-bold">620 - 1040 ₽</span></li>
-                            <li class="flex justify-between pt-3"><span>Сварка диска аргоном (за 1 см.)</span><span class="font-bold">200 ₽</span></li>
+                            <li class="flex justify-between border-b border-gray-700 py-3 price-list-item"><span>Правка диска штамп. (R13-R16)</span><span class="font-bold">420 ₽</span></li>
+                            <li class="flex justify-between border-b border-gray-700 py-3 price-list-item"><span>Правка диска литой (R13-R18)</span><span class="font-bold">620 - 1040 ₽</span></li>
+                            <li class="flex justify-between pt-3 price-list-item"><span>Сварка диска аргоном (за 1 см.)</span><span class="font-bold">200 ₽</span></li>
                         </ul>
                     </div>
                 </div>
@@ -264,13 +409,13 @@
         <section id="map" class="py-20 bg-gray-800">
             <div class="container mx-auto px-6">
                 <h2 class="text-4xl font-bold text-center mb-12" data-aos="fade-up">Мы здесь</h2>
-                <div class="grid md:grid-cols-2 gap-8 items-center">
-                    <div class="rounded-xl overflow-hidden shadow-2xl" data-aos="fade-right">
+                <div class="grid md:grid-cols-2 gap-8 items-start">
+                    <div class="rounded-xl overflow-hidden shadow-2xl sticky top-28" data-aos="fade-right">
                          <div style="width: 100%; height: 400px;">
                             <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Acc7ed495ed6ddacaeab60edcc7b1c414c118b74ccdccf0d0943bf3296302b918&amp;width=100%25&amp;height=400&amp;lang=ru_RU&amp;scroll=true"></script>
                         </div>
                     </div>
-                    <div data-aos="fade-left">
+                    <div data-aos="fade-left" data-aos-delay="100">
                         <h3 class="text-3xl font-bold mb-4">Наш адрес:</h3>
                         <p class="text-2xl text-gray-300 mb-6">Тульская Область, Алексинский Район, Село Поповка, Улица Полевая, 2</p>
                         <h3 class="text-3xl font-bold mb-4">Режим работы:</h3>
@@ -287,7 +432,7 @@
 
     </main>
 
-    <footer class="bg-gray-900 py-10 border-t border-gray-700">
+    <footer class="bg-gray-900 py-10 border-t border-gray-700" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
         <div class="container mx-auto px-6 text-center text-gray-500">
             <p>&copy; 2025 "ШинаДом". Все права защищены.</p>
             <p class="text-sm mt-2">Сайт: ШинаДом.рф</p>
@@ -295,28 +440,32 @@
         </div>
     </footer>
 
-    <div id="priceModal" class="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm p-4 hidden">
-        <div class="bg-gray-800 w-full max-w-2xl rounded-2xl shadow-2xl p-6 md:p-8 relative overflow-hidden" data-aos="zoom-in" data-aos-duration="300">
+    <div id="priceModal" class="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm p-4 hidden opacity-0 transition-opacity duration-300 ease-in-out">
+        <div class="glass-modal w-full max-w-3xl rounded-2xl shadow-2xl p-6 md:p-8 relative overflow-hidden" data-aos="zoom-in" data-aos-duration="300">
             <button id="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-cyan-400 transition-colors z-10">
                 <i data-lucide="x" class="h-8 w-8"></i>
             </button>
             
             <div id="quiz-container" class="relative">
+                
+                <div class="w-full bg-gray-700 rounded-full h-2.5 mb-6 overflow-hidden">
+                    <div id="quiz-progress" class="bg-cyan-400 h-2.5 rounded-full transition-all duration-500 ease-out" style="width: 20%"></div>
+                </div>
 
                 <div id="quiz-step-1" class="quiz-step active">
                     <h3 class="text-2xl md:text-3xl font-bold text-center mb-6 text-cyan-400">1. Что у вас за аппарат?</h3>
-                    <div id="car-type-options" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <button class="quiz-option-btn p-5 bg-gray-900 border-2 border-gray-700 rounded-lg text-lg" data-value="Легковые машины">Легковые машины</button>
-                        <button class="quiz-option-btn p-5 bg-gray-900 border-2 border-gray-700 rounded-lg text-lg" data-value="Паркетники / Кроссоверы">Паркетники / Кроссоверы</button>
-                        <button class="quiz-option-btn p-5 bg-gray-900 border-2 border-gray-700 rounded-lg text-lg" data-value="Внедорожники / Джипы">Внедорожники / Джипы</button>
-                        <button class="quiz-option-btn p-5 bg-gray-900 border-2 border-gray-700 rounded-lg text-lg" data-value="Низкий профиль / RunFlat">Низкий профиль / RunFlat</button>
-                        <button class="quiz-option-btn p-5 bg-gray-900 border-2 border-gray-700 rounded-lg text-lg md:col-span-2" data-value="Газель">Газель</button>
+                    <div id="car-type-options" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <button class="quiz-option-btn glass-button p-5 border-2 rounded-lg text-lg" data-value="Легковые машины">Легковые машины</button>
+                        <button class="quiz-option-btn glass-button p-5 border-2 rounded-lg text-lg" data-value="Паркетники / Кроссоверы">Паркетники / Кроссоверы</button>
+                        <button class="quiz-option-btn glass-button p-5 border-2 rounded-lg text-lg" data-value="Внедорожники / Джипы">Внедорожники / Джипы</button>
+                        <button class="quiz-option-btn glass-button p-5 border-2 rounded-lg text-lg" data-value="Низкий профиль / RunFlat">Низкий профиль / RunFlat</button>
+                        <button class="quiz-option-btn glass-button p-5 border-2 rounded-lg text-lg" data-value="Газель">Газель</button>
                     </div>
                 </div>
 
                 <div id="quiz-step-2" class="quiz-step hidden">
                     <h3 class="text-2xl md:text-3xl font-bold text-center mb-6 text-cyan-400">2. Какой размер колес?</h3>
-                    <div id="tire-size-options" class="grid grid-cols-3 md:grid-cols-4 gap-3">
+                    <div id="tire-size-options" class="flex flex-wrap justify-center gap-3">
                     </div>
                     <div class="flex justify-start mt-6">
                         <button class="quiz-back-btn p-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors flex items-center gap-2" data-target="1">
@@ -352,7 +501,7 @@
                            <span class="flex-grow border-t border-gray-700"></span>
                         </div>
 
-                        <div id="individualServices" class="space-y-3 p-4 bg-gray-900 rounded-lg">
+                        <div id="individualServices" class="space-y-3 p-4 glass-card rounded-lg">
                             <p class="text-lg font-medium text-gray-300 mb-3">Выберите услуги:</p>
                             <div class="flex items-center border-b border-gray-700 pb-3 mb-3">
                                 <input id="check-all-services" type="checkbox" class="h-5 w-5 text-cyan-400 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500">
@@ -391,7 +540,7 @@
                 
                 <div id="quiz-step-4" class="quiz-step hidden">
                     <h3 class="text-2xl md:text-3xl font-bold text-center mb-6 text-cyan-400">4. Проверьте ваш выбор</h3>
-                    <div class="bg-gray-900 rounded-lg p-5 space-y-3 text-lg">
+                    <div class="glass-card rounded-lg p-5 space-y-3 text-lg">
                         <div class="flex justify-between">
                             <span class="text-gray-400">Аппарат:</span>
                             <span id="summary-car-type" class="font-bold"></span>
@@ -464,8 +613,114 @@
     </div>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        const lenis = new Lenis()
+
+        function raf(time) {
+          lenis.raf(time)
+          requestAnimationFrame(raf)
+        }
+
+        requestAnimationFrame(raf)
+
         document.addEventListener('DOMContentLoaded', () => {
             
+            const progressBar = document.getElementById('scroll-progress-bar');
+            
+            const wheel = document.getElementById('wheel');
+            const wheelGroup = document.getElementById('wheel-group');
+            const wheelContainer = document.getElementById('why-us-container');
+            let wheelElementsFound = wheel && wheelContainer && wheelGroup;
+            
+            let startScale, startRotateX, startRotateZInitial, endScale, endRotateX, lerp;
+            let containerTop = 0;
+            let containerHeight = 0;
+            let viewportHeight = 0;
+            let animStart = 0;
+            let animDuration = 0;
+            
+            if (wheelElementsFound) {
+                startScale = 0.05;
+                startRotateX = 70;
+                startRotateZInitial = -720; 
+                endScale = 1;
+                endRotateX = 0;
+                
+                wheel.style.opacity = 0;
+                wheel.style.transform = `scale(${startScale}) rotateX(${startRotateX}deg) rotateZ(${startRotateZInitial}deg)`;
+                wheel.style.transformOrigin = 'center center';
+                wheel.style.willChange = 'transform, opacity';
+                
+                lerp = (a, b, t) => a + (b - a) * t;
+                
+                const containerRect = wheelContainer.getBoundingClientRect();
+                containerTop = containerRect.top + window.scrollY; 
+                containerHeight = wheelContainer.offsetHeight;
+                viewportHeight = window.innerHeight;
+                animStart = containerTop;
+                animDuration = containerHeight - viewportHeight;
+            }
+            
+            const easeOutQuad = (t) => t * (2 - t);
+            
+            let hasWheelRolledAway = false;
+
+            lenis.on('scroll', (e) => {
+                const scrollTop = e.animatedScroll;
+                const docHeight = document.documentElement.scrollHeight;
+                const clientHeight = document.documentElement.clientHeight;
+                
+                let scrollPercent = 0;
+                if ((docHeight - clientHeight) > 0) {
+                    scrollPercent = (scrollTop / (docHeight - clientHeight));
+                }
+                if (progressBar) {
+                    progressBar.style.width = (scrollPercent * 100) + '%';
+                }
+
+                if (wheelElementsFound) {
+                    
+                    if (hasWheelRolledAway) {
+                        return;
+                    }
+
+                    let animProgress = 0;
+                    if (scrollTop >= animStart) {
+                        animProgress = (scrollTop - animStart) / animDuration;
+                    } else {
+                        animProgress = 0;
+                    }
+
+                    if (animProgress <= 1.0) {
+                        const buildUpProgress = Math.max(0, Math.min(1, animProgress));
+                        
+                        const currentOpacity = buildUpProgress;
+                        const currentScale = lerp(startScale, endScale, buildUpProgress);
+                        const currentRotateX = lerp(startRotateX, endRotateX, buildUpProgress);
+                        const combinedRotateZ = lerp(startRotateZInitial, 0, buildUpProgress);
+
+                        wheel.style.transition = 'none';
+                        wheel.style.opacity = currentOpacity;
+                        wheel.style.transform = `scale(${currentScale}) rotateX(${currentRotateX}deg) rotateZ(${combinedRotateZ}deg) translateX(0px)`;
+                        
+                        wheelGroup.classList.remove('spinning-group');
+
+                    } else if (animProgress > 1.0 && !hasWheelRolledAway) {
+                        hasWheelRolledAway = true; 
+                        
+                        wheel.style.transition = 'none';
+                        wheel.style.opacity = 1; 
+                        wheel.style.transform = 'scale(1) rotateX(0deg) rotateZ(0deg) translateX(0px)';
+                        
+                        wheelGroup.classList.add('spinning-group');
+                        
+                        setTimeout(() => {
+                            wheel.style.transition = 'transform 2.0s cubic-bezier(0.5, 0, 0.8, 0.5)'; 
+                            wheel.style.transform = 'scale(1) rotateX(0deg) rotateZ(0deg) translateX(150vw)'; 
+                        }, 0); 
+                    }
+                }
+            });
+
             const priceData = {
                 "Легковые машины": {
                     "R14": { "shinomontazh": 100, "balansirovka": 240, "snyatie": 160, "moyka": 80, "complex": 2380 },
@@ -518,6 +773,7 @@
             const modal = document.getElementById('priceModal');
             const openBtn = document.getElementById('openPriceCalculator');
             const closeBtn = document.getElementById('closeModal');
+            const quizProgress = document.getElementById('quiz-progress');
             
             const steps = {
                 1: document.getElementById('quiz-step-1'),
@@ -575,6 +831,9 @@
                         steps[stepNum+1].classList.add('hidden-left');
                     }
                 }
+                
+                const progress = (stepNum / 5) * 100;
+                quizProgress.style.width = `${progress}%`;
             }
             
             function resetQuiz() {
@@ -590,22 +849,29 @@
             openBtn.addEventListener('click', () => {
                 resetQuiz();
                 modal.classList.remove('hidden');
+                setTimeout(() => modal.classList.remove('opacity-0'), 10);
             });
             
-            closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
+            function closeModal() {
+                 modal.classList.add('opacity-0');
+                setTimeout(() => modal.classList.add('hidden'), 300);
+            }
+            
+            closeBtn.addEventListener('click', closeModal);
             
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
-                    modal.classList.add('hidden');
+                    closeModal();
                 }
             });
 
             carTypeOptions.addEventListener('click', (e) => {
-                if (e.target.matches('.quiz-option-btn')) {
-                    quizState.carType = e.target.dataset.value;
+                const target = e.target.closest('.quiz-option-btn');
+                if (target) {
+                    quizState.carType = target.dataset.value;
                     
                     document.querySelectorAll('#car-type-options .quiz-option-btn').forEach(btn => btn.classList.remove('selected'));
-                    e.target.classList.add('selected');
+                    target.classList.add('selected');
                     
                     updateTireSizes();
                     showStep(2);
@@ -619,7 +885,7 @@
                     sizes.forEach(size => {
                         const btn = document.createElement('button');
                         btn.type = 'button';
-                        btn.className = 'quiz-option-btn p-4 bg-gray-900 border-2 border-gray-700 rounded-lg text-md';
+                        btn.className = 'quiz-option-btn glass-button p-4 border-2 rounded-lg text-md';
                         btn.dataset.value = size;
                         btn.textContent = size;
                         tireSizeOptions.appendChild(btn);
@@ -628,11 +894,12 @@
             }
 
             tireSizeOptions.addEventListener('click', (e) => {
-                if (e.target.matches('.quiz-option-btn')) {
-                    quizState.tireSize = e.target.dataset.value;
+                const target = e.target.closest('.quiz-option-btn');
+                if (target) {
+                    quizState.tireSize = target.dataset.value;
                     
                     document.querySelectorAll('#tire-size-options .quiz-option-btn').forEach(btn => btn.classList.remove('selected'));
-                    e.target.classList.add('selected');
+                    target.classList.add('selected');
 
                     wheelSizeLabel.textContent = quizState.tireSize;
                     showStep(3);
@@ -764,8 +1031,22 @@
                 showStep(5);
             });
 
+            function animateValue(obj, start, end, duration) {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString('ru-RU');
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            }
+
             const calculatePrice = () => {
                 const { carType, tireSize, wheelCount, isComplex, services } = quizState;
+                priceResultEl.textContent = '0';
                 
                 if (!carType || !tireSize) {
                     priceResultEl.textContent = 'N/A';
@@ -806,7 +1087,7 @@
                     priceNoteEl.textContent = 'Услуги или количество не выбраны';
                 }
                 
-                priceResultEl.textContent = totalPrice.toLocaleString('ru-RU');
+                animateValue(priceResultEl, 0, totalPrice, 500);
             };
             
         });
@@ -820,3 +1101,5 @@
     </script>
 </body>
 </html>
+
+
