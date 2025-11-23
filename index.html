@@ -16,6 +16,44 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/split-type"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "AutoRepair",
+      "name": "ШинаДом",
+      "image": "https://i.postimg.cc/BZPV0C6F/1763922392546.png",
+      "telephone": "+79029093879",
+      "url": "https://шинадом.рф",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "ул. Полевая, 2",
+        "addressLocality": "с. Поповка",
+        "addressRegion": "Тульская область",
+        "postalCode": "300000",
+        "addressCountry": "RU"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 54.1930,
+        "longitude": 37.6178
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "09:00",
+        "closes": "21:00"
+      },
+      "priceRange": "₽₽"
+    }
+    </script>
 
     <script>
         tailwind.config = {
@@ -40,6 +78,7 @@
     <style>
         :root { --cursor-size: 20px; }
         body { background-color: #050505; color: #f2f2f2; overflow-x: hidden; cursor: none; }
+        body.modal-open { overflow: hidden !important; }
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #050505; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
@@ -104,7 +143,6 @@
 <div id="cursor"></div>
 <div class="noise-overlay"></div>
 
-<!-- Изменена шапка: добавлен фон, блюр и бордер -->
 <header class="fixed top-0 w-full z-50 bg-black/40 backdrop-blur-md border-b border-white/10 text-white py-4 px-6 md:px-12 flex justify-between items-center transform transition-all duration-500" id="main-header">
     <a href="https://шинадом.рф" class="font-display font-bold text-xl tracking-tighter z-50 magnetic-wrap" data-strength="20">SHINADOM</a>
     
@@ -279,7 +317,6 @@
                             <div class="h-px w-3/4 bg-gradient-to-r from-transparent via-white/20 to-transparent mt-8"></div>
                         </div>
 
-                        <!-- Исправленная кнопка с фиксированной высотой -->
                         <a href="#" id="whatsapp-btn" class="relative z-10 w-full h-[80px] flex items-center justify-center bg-white text-black font-display font-bold text-center uppercase tracking-[0.2em] rounded-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 overflow-hidden group/btn shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]">
                             <span class="relative z-10 group-hover/btn:hidden">Записаться</span>
                             <div class="absolute inset-0 flex items-center justify-center translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300 bg-[#25D366] text-white z-20 gap-2">
@@ -385,18 +422,22 @@
             </div>
         </div>
 
-        <footer class="container mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-end gap-6 border-t border-black/10 mt-24">
-            <div class="flex flex-col gap-2">
+        <footer class="container mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-center md:items-end gap-6 border-t border-black/10 mt-24">
+            <div class="flex flex-col gap-2 text-center md:text-left">
                 <p class="font-display font-bold text-xl tracking-tighter">SHINADOM</p>
                 <p class="font-sans text-xs text-gray-400">© 2025 ALL RIGHTS RESERVED.</p>
             </div>
-            <div class="flex flex-col md:flex-row gap-4 md:gap-8 font-sans text-xs font-bold uppercase tracking-widest w-full md:w-auto">
-                <button onclick="openModal('offer')" class="hover:text-accent transition-colors text-left md:text-right">Публичная Оферта</button>
-                <button onclick="openModal('policy')" class="hover:text-accent transition-colors text-left md:text-right">Политика Конфиденциальности</button>
+            <div class="flex flex-col md:flex-row gap-4 md:gap-8 font-sans text-xs font-bold uppercase tracking-widest w-full md:w-auto items-center md:items-end">
+                <button onclick="openModal('offer')" class="hover:text-accent transition-colors text-center md:text-right">Публичная Оферта</button>
+                <button onclick="openModal('policy')" class="hover:text-accent transition-colors text-center md:text-right">Политика Конфиденциальности</button>
             </div>
         </footer>
     </section>
 </main>
+
+<a href="tel:+79029093879" class="fixed bottom-6 right-6 z-40 md:hidden w-16 h-16 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg text-white hover:scale-110 active:scale-95 transition-all duration-300">
+    <i data-lucide="phone" class="w-8 h-8 fill-current"></i>
+</a>
 
 <div id="modal" class="fixed inset-0 z-[100] bg-black/80 hidden opacity-0 transition-opacity duration-500 backdrop-blur-sm">
     <div class="absolute right-0 top-0 h-full w-full md:w-[700px] bg-white p-6 md:p-12 translate-x-full transition-transform duration-700 ease-expo shadow-[-50px_0_100px_rgba(0,0,0,0.5)] flex flex-col" id="modal-panel">
@@ -647,6 +688,7 @@
     `;
 
     window.openModal = (type) => {
+        document.body.classList.add('modal-open');
         modalTitle.innerText = type === 'offer' ? "Публичная Оферта" : "Политика Конфиденциальности";
         modalBody.innerHTML = type === 'offer' ? legalTextOffer : legalTextPolicy;
         modal.classList.remove('hidden');
@@ -657,6 +699,7 @@
     };
 
     window.closeModal = () => {
+        document.body.classList.remove('modal-open');
         modalPanel.classList.add('translate-x-full');
         modal.classList.add('opacity-0');
         setTimeout(() => modal.classList.add('hidden'), 500);
